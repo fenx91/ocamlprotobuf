@@ -40,13 +40,16 @@ let error msg	= failwith msg
 %token RPAREN
 %token LBRACE
 %token RBRACE
+%token LBRACK
+%token RBRACK
 %token QUOTE
 %token DECLAREINT
 %token DECLAREPROTO
 %token END
 %token PERIOD
-
-
+%token DOLLAR
+%token READFROM
+%token WRITETO
 %token EOF
 
 %start com
@@ -62,7 +65,7 @@ let error msg	= failwith msg
 %%
 
 aexp : INT                                   { Const($1) }
-| IDENTIFIER                                 { Var($1) }
+| IDENTIFIER                                 { Var $1}
 | aexp PLUS aexp                             { Add ($1,$3) } 
 | aexp MINUS aexp                            { Sub ($1,$3) } 
 | aexp TIMES aexp                            { Mul ($1,$3) } 
@@ -81,8 +84,8 @@ bexp : TRUE                                  { True }
 | LPAREN bexp RPAREN                         { $2 }
 ;
 
-com : SKIP                                   { Skip }
-| IDENTIFIER SET aexp                        { Set($1,$3) } 
+com :
+| aexp SET aexp                        { Set($1,$3) } 
 | com SEMICOLON com                          { Seq($1,$3) }
 | IF bexp THEN com END			     { If($2,$4) }
 | IF bexp THEN com END ELSE com END          { Ifelse($2,$4,$7) }
@@ -91,4 +94,15 @@ com : SKIP                                   { Skip }
 | LBRACE com RBRACE                          { $2 } 
 | DECLAREINT IDENTIFIER			     { Declareint($2) }
 | DECLAREPROTO IDENTIFIER QUOTE IDENTIFIER PERIOD IDENTIFIER QUOTE QUOTE IDENTIFIER QUOTE { Declareproto($2,$4,$9) } 
+| IDENTIFIER READFROM QUOTE IDENTIFIER QUOTE    { Readfrom($1,$4) } 
+| IDENTIFIER WRITETO QUOTE IDENTIFIER QUOTE     { Writeto($1,$4) }
+| IDENTIFIER DOLLAR exp_inside IDENTIFIER SET aexp                      { SetProto1($1,$3,$4,$6) }
+| IDENTIFIER DOLLAR IDENTIFIER SET aexp                                 { SetProto3($1,$3,$5) }
+| IDENTIFIER DOLLAR IDENTIFIER LBRACK INT RBRACK SET aexp               { SetProto4($1,$3,$5,$8) }
+;
+
+exp_inside:
+| IDENTIFIER DOLLAR             { ExpInside1 $1 }
+| IDENTIFIER LBRACK INT RBRACK  { ExpInside2 ($1, $3) }
+| exp_inside exp_inside         { ExpInside3 ($1, S2) :}
 ;

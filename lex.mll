@@ -40,13 +40,18 @@ rule initial = parse
 | "Integer"	{ DECLAREINT }
 | "end"		{ END }
 | "Protobuf"	{ DECLAREPROTO }
+| "readfrom"    { READFROM }
+| "writeto"     { WRITETO }
 | "."           { PERIOD }
 | "\""		{ QUOTE }
+| "$"           { DOLLAR }
 
 | '('           { LPAREN }
 | ')'           { RPAREN } 
 | '{'           { LBRACE }
 | '}'           { RBRACE } 
+| '['           { LBRACK }
+| ']'           { RBRACK }
 
 | ("0x")?'-'?['0'-'9']+ {
   let str = Lexing.lexeme lexbuf in 

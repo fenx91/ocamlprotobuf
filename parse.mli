@@ -36,6 +36,8 @@ type token =
   | DOLLAR
   | READFROM
   | WRITETO
+  | COPYFROM
+  | SIZEOF
   | EOF
 
 val com :

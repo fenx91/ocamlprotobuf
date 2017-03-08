@@ -1,13 +1,11 @@
 if true then
   Integer x;
-  x:=2;
-  Protobuf x "person.proto" "Person";
-  d readfrom "myfile";
-  x$home[3] := 3 + 5
+  x := 3;
+  Protobuf d "person.proto" "Person";
+  addree $ person[3] $ home copyfrom home ;
+  person $ phone[3] copyfrom  my_phone
 end
 else
-  Integer x;
-  x:=3;
   d writeto "myfile"
 end;
 print x

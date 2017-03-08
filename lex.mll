@@ -42,6 +42,8 @@ rule initial = parse
 | "Protobuf"	{ DECLAREPROTO }
 | "readfrom"    { READFROM }
 | "writeto"     { WRITETO }
+| "copyfrom"    { COPYFROM }
+| "sizeof"      { SIZEOF }
 | "."           { PERIOD }
 | "\""		{ QUOTE }
 | "$"           { DOLLAR }

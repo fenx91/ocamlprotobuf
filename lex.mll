@@ -22,9 +22,11 @@ rule initial = parse
 | '/'           { DIV }
 | "true"        { TRUE }
 | "false"       { FALSE }
-| "="           
 | "=="          { EQ_TOK }
+| "<"           { L_TOK }
 | "<="          { LE_TOK }
+| ">"           { B_TOK }
+| ">="          { BE_TOK }
 | "not"         { NOT }
 | "and"         { AND }
 | "or"          { OR }
@@ -38,6 +40,7 @@ rule initial = parse
 | "do"          { DO }
 | "print"       { PRINT }
 | "Integer"	{ DECLAREINT }
+| "Boolean"     { DECLAREBOOL }
 | "end"		{ END }
 | "Protobuf"	{ DECLAREPROTO }
 | "readfrom"    { READFROM }

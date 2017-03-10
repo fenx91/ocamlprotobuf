@@ -23,7 +23,10 @@ let error msg	= failwith msg
 %token TRUE
 %token FALSE
 %token EQ_TOK
+%token L_TOK
 %token LE_TOK
+%token B_TOK
+%token BE_TOK
 %token NOT
 %token AND
 %token OR 
@@ -45,6 +48,7 @@ let error msg	= failwith msg
 %token QUOTE
 %token DECLAREINT
 %token DECLAREPROTO
+%token DECLAREBOOL
 %token END
 %token PERIOD
 %token DOLLAR
@@ -64,7 +68,7 @@ let error msg	= failwith msg
 %left OR
 %left PLUS MINUS
 %left TIMES
-%left LE_TOK EQ_TOK
+%left L_TOK LE_TOK B_TOK BE_TOK EQ_TOK
 %left DOLLAR
 
 %nonassoc ELSE
@@ -95,6 +99,9 @@ bexp : TRUE                                  { True }
 | FALSE                                      { False }
 | aexp EQ_TOK aexp                           { EQ ($1,$3) }
 | aexp LE_TOK aexp                           { LE($1,$3) }
+| aexp L_TOK aexp                            { L($1,$3) }
+| aexp B_TOK aexp                            { B($1,$3) }
+| aexp BE_TOK aexp                           { BE($1,$3) }
 | NOT bexp                                   { Not($2) }
 | bexp AND bexp                              { And($1,$3)  }
 | bexp OR bexp                               { Or($1,$3) }
@@ -102,7 +109,8 @@ bexp : TRUE                                  { True }
 ;
 
 com :
-| IDENTIFIER SET aexp                        { Set($1,$3) } 
+| IDENTIFIER SET aexp                        { Setint($1,$3) }
+| IDENTIFIER SET bexp                        { Setbool($1,$3)} 
 | com SEMICOLON com                          { Seq($1,$3) }
 | IF bexp THEN com END			     { If($2,$4) }
 | IF bexp THEN com END ELSE com END          { Ifelse($2,$4,$7) }
@@ -111,6 +119,7 @@ com :
 | LBRACE com RBRACE                          { $2 } 
 
 | DECLAREINT IDENTIFIER			     { Declareint($2) }
+| DECLAREBOOL IDENTIFIER                     { Declarebool($2) }
 | DECLAREPROTO IDENTIFIER QUOTE IDENTIFIER PERIOD IDENTIFIER QUOTE QUOTE IDENTIFIER QUOTE { Declareproto($2,$4,$9) } 
 | IDENTIFIER READFROM QUOTE IDENTIFIER QUOTE    { Readfrom($1,$4) } 
 | IDENTIFIER WRITETO QUOTE IDENTIFIER QUOTE     { Writeto($1,$4) }

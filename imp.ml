@@ -86,7 +86,7 @@ let rec aexp_to_str a = match a with
   | Sub (a, b) -> P.sprintf "(%s - %s)" (aexp_to_str a) (aexp_to_str b)
   | Mul (a, b) -> P.sprintf "(%s * %s)" (aexp_to_str a) (aexp_to_str b)
   | Div (a, b) -> P.sprintf "(%s / %s)" (aexp_to_str a) (aexp_to_str b)
-  | Mod (a, b) -> P.sprintf "(%s % %s)" (aexp_to_str a) (aexp_to_str b)
+  | Mod (a, b) -> P.sprintf "(%s %% %s)" (aexp_to_str a) (aexp_to_str b)
   
   | Proto p -> P.sprintf "%s" (pro_ele_to_str p)
   | Sizeof1 (l1, e, l2) -> 
@@ -133,9 +133,9 @@ and com_to_str c = match c with
   | Declarebool l -> P.sprintf "bool %s" l
   | Declareproto (l1, l2, l3) -> P.sprintf "%s %s" l3 l1
   | Readfrom (l1, l2) -> 
-      P.sprintf "fstream input(%s,ios::in | ios:binary);\n%s.ParseFromIstream(&input)" l2 l1
+      P.sprintf "fstream input(%s,ios::in | ios::binary);\n%s.ParseFromIstream(&input)" l2 l1
   | Writeto (l1, l2) -> 
-      P.sprintf "fstream output(%s,ios::out | ios:binary);\n%s.SerializeToOstream(&output)" l2 l1
+      P.sprintf "fstream output(%s,ios::out | ios::binary);\n%s.SerializeToOstream(&output)" l2 l1
  
 
  | SetProto1 (l1, e, l2, a) ->

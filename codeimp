@@ -1,12 +1,13 @@
-if c < 5 then
-  Integer x;
-  x := 3 % 4;
-  Protobuf d "person.proto" "Person";
-  addree $ person[3] $ home copyfrom home ;
-  person $ phone[3] copyfrom  my_phone
-end
-else
-  d writeto "myfile"
-end;
-print x
+Integer age;
+age := 4;
+ 
+ Integer name;
+  name := 3 % 4;
+ 
+  Protobuf person "person.proto" "Person";
+  person $ age :=  24;
+  person $ names[+] 3;
+  age := person $ age;
+  name := person $ names[0]
+
 

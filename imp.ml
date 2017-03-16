@@ -47,17 +47,23 @@ type bexp =
   | And of bexp * bexp          (* b0 /\ b1 *) (* b0 && b1 *) 
   | Or of bexp * bexp           (* b0 \/ b1 *) (* b0 || b1 *) 
 
+type strexp =
+  | Str of string
+  | PPrint of loc 
+
 type com =
   | Setint of loc * aexp           (* x := a *) 
   | Setbool of loc * bexp
+  | Setstr of loc * strexp
   | Seq of com * com            (* c0 ; c1 *)
   | If of bexp * com		(* if b then c end *)
   | Ifelse of bexp * com * com  (* if b then c0 end else c1 end *)
   | While of bexp * com         (* while b do c *)
-  | Print of aexp               (* print a *) 
+  | Print of loc
   
   | Declareint of loc		(* Integer i *)
   | Declarebool of loc
+  | Declarestr of loc
   | Declareproto of loc * loc * loc
   | Readfrom of loc * loc
   | Writeto of loc * loc
@@ -78,6 +84,10 @@ type com =
  * handy for debugging. They convert instances of Aexp, Bexp and Com into
  * strings (that you can print out later with print_string, say). *) 
 module P = Printf 
+
+let string_of_program program = 
+    "\n#include <iostream>\n#include <string>/nusing namespace std;\n\n"
+
 
 let rec aexp_to_str a = match a with
   | Var l -> l
@@ -118,9 +128,14 @@ and bexp_to_str b = match b with
   | And (a, b) -> P.sprintf "(%s && %s)" (bexp_to_str a) (bexp_to_str b)
   | Or (a, b) -> P.sprintf "(%s || %s)" (bexp_to_str a) (bexp_to_str b)
 
+and strexp_to_str s = match s with
+  | Str (s) -> s
+  | PPrint (l) -> P.sprintf "%s.DebugString()" l
+
 and com_to_str c = match c with
-  | Setint (l, b) -> P.sprintf "%s = %s" l (aexp_to_str b)
+  | Setint (l, a) -> P.sprintf "%s = %s" l (aexp_to_str a)
   | Setbool (l, b) -> P.sprintf "%s = %s" l (bexp_to_str b) 
+  | Setstr (l, s) -> P.sprintf "%s = %s" l (strexp_to_str s)
   | Seq (a, b) -> P.sprintf "%s ;\n%s" (com_to_str a) (com_to_str b)
   | If (b, c) -> P.sprintf "if (%s) { %s; }" (bexp_to_str b) (com_to_str c)
   | Ifelse (b, c0, c1) ->
@@ -128,9 +143,10 @@ and com_to_str c = match c with
 	(bexp_to_str b) (com_to_str c0) (com_to_str c1) 
   | While (b, c) ->
       P.sprintf "{ while %s do %s }" (bexp_to_str b) (com_to_str c) 
-  | Print a -> P.sprintf "print %s" (aexp_to_str a)
+  | Print l -> P.sprintf "cout << %s << endl" l
   | Declareint l -> P.sprintf "int %s" l
   | Declarebool l -> P.sprintf "bool %s" l
+  | Declarestr l -> P.sprintf "string %s" l
   | Declareproto (l1, l2, l3) -> P.sprintf "%s %s" l3 l1
   | Readfrom (l1, l2) -> 
       P.sprintf "fstream input(%s,ios::in | ios::binary);\n%s.ParseFromIstream(&input)" l2 l1
@@ -170,14 +186,16 @@ and exp_inside_to_str e = match e with
 let rec find_include c = match c with
   | Setint (a, b) -> "" 
   | Setbool (a, b) -> ""
-  | Seq (a, b) -> P.sprintf "%s\n%s" (find_include a) (find_include b)
+  | Setstr (a, b)  -> ""
+  | Seq (a, b) -> P.sprintf "%s%s" (find_include a) (find_include b)
   | If (b, c) -> P.sprintf "%s" (find_include c)
   | Ifelse (b, c0, c1) -> P.sprintf "%s\n%s" (find_include c0) (find_include c1)
   | While (b, c) -> P.sprintf "%s" (find_include c)
   | Print a -> ""
   | Declareint l -> ""
   | Declarebool l -> ""
-  | Declareproto (l1, l2, l3) -> P.sprintf "#include \"%s.pb.h\"" l2
+  | Declarestr l -> ""
+  | Declareproto (l1, l2, l3) -> P.sprintf "#include \"%s.pb.h\"\n" l2
   | Readfrom (l1, l2) -> ""
   | Writeto (l1, l2) -> ""
   | SetProto1 (l1, e,l2, a) -> ""

@@ -39,8 +39,10 @@ rule initial = parse
 | "while"       { WHILE }
 | "do"          { DO }
 | "print"       { PRINT }
+| "pprint"      { PPRINT }
 | "Integer"	{ DECLAREINT }
 | "Boolean"     { DECLAREBOOL }
+| "String"      { DECLARESTR }
 | "end"		{ END }
 | "Protobuf"	{ DECLAREPROTO }
 | "readfrom"    { READFROM }

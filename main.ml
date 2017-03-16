@@ -13,14 +13,16 @@ let main () =
   Arg.parse args (fun _ -> ()) "" ; 
 
   if not !silent then begin 
-    printf "Enter an IMP command (use . to end your command):\n" ;
+    printf "\n#include <iostream>\n#include <fstream>\n#include <string>\nusing namespace std;\n\n";
     flush stdout ; 
   end ; 
   let lexbuf = Lexing.from_channel stdin in
   let imp_command = Parse.com Lex.initial lexbuf in
   if not !silent then begin 
-    print_endline (Imp.find_include imp_command) ;
-    print_endline (Imp.com_to_str imp_command) ; 
+    print_string (Imp.find_include imp_command) ;
+    printf "int main() {\n";
+    print_string (Imp.com_to_str imp_command) ; 
+    printf ";\nreturn 0;\n}"
   end ; 
 (*  let sigma_0 = Hw1.empty_state in 
   let sigma_n =

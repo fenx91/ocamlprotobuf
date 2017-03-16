@@ -1,6 +1,7 @@
 type token =
   | IDENTIFIER of (string)
   | INT of (int)
+  | STRING of (string)
   | PLUS
   | MINUS
   | TIMES
@@ -25,6 +26,7 @@ type token =
   | WHILE
   | DO
   | PRINT
+  | PPRINT
   | LPAREN
   | RPAREN
   | LBRACE
@@ -35,6 +37,7 @@ type token =
   | DECLAREINT
   | DECLAREPROTO
   | DECLAREBOOL
+  | DECLARESTR
   | END
   | PERIOD
   | DOLLAR

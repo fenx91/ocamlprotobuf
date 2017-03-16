@@ -4,10 +4,17 @@ age := 4;
  Integer name;
   name := 3 % 4;
  
+if (true) then
   Protobuf person "person.proto" "Person";
-  person $ age :=  24;
+  person $ age := 24;
+  person $ names[+] 4;
   person $ names[+] 3;
-  age := person $ age;
-  name := person $ names[0]
-
-
+  person $ home $ address := 10086;
+  person $ phones [+];
+  person $ phones [+];
+  person $ phones[0] $ number := 3538;
+  person $ phones[1] $ number := 2100; 
+  String str;
+  str := pprint person
+end;
+  print str 

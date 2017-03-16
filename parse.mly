@@ -14,6 +14,7 @@ let error msg	= failwith msg
 
 %token <string>         IDENTIFIER
 %token <int>            INT
+%token <string>         STRING
 
 %token PLUS 
 %token MINUS 
@@ -39,6 +40,7 @@ let error msg	= failwith msg
 %token WHILE
 %token DO 
 %token PRINT
+%token PPRINT
 %token LPAREN
 %token RPAREN
 %token LBRACE
@@ -49,6 +51,7 @@ let error msg	= failwith msg
 %token DECLAREINT
 %token DECLAREPROTO
 %token DECLAREBOOL
+%token DECLARESTR
 %token END
 %token PERIOD
 %token DOLLAR
@@ -108,18 +111,24 @@ bexp : TRUE                                  { True }
 | LPAREN bexp RPAREN                         { $2 }
 ;
 
+strexp: STRING                               { Str($1) } 
+| PPRINT IDENTIFIER                          { PPrint($2) }
+         
 com :
 | IDENTIFIER SET aexp                        { Setint($1,$3) }
-| IDENTIFIER SET bexp                        { Setbool($1,$3)} 
+| IDENTIFIER SET bexp                        { Setbool($1,$3) }
+| IDENTIFIER SET strexp                      { Setstr ($1,$3) }
+ 
 | com SEMICOLON com                          { Seq($1,$3) }
 | IF bexp THEN com END			     { If($2,$4) }
 | IF bexp THEN com END ELSE com END          { Ifelse($2,$4,$7) }
 | WHILE bexp DO com                          { While($2,$4) }
-| PRINT aexp                                 { Print($2) }
+| PRINT IDENTIFIER                           { Print($2) }
 | LBRACE com RBRACE                          { $2 } 
 
 | DECLAREINT IDENTIFIER			     { Declareint($2) }
 | DECLAREBOOL IDENTIFIER                     { Declarebool($2) }
+| DECLARESTR IDENTIFIER                      { Declarestr($2) }
 | DECLAREPROTO IDENTIFIER QUOTE IDENTIFIER PERIOD IDENTIFIER QUOTE QUOTE IDENTIFIER QUOTE { Declareproto($2,$4,$9) } 
 | IDENTIFIER READFROM QUOTE IDENTIFIER QUOTE    { Readfrom($1,$4) } 
 | IDENTIFIER WRITETO QUOTE IDENTIFIER QUOTE     { Writeto($1,$4) }

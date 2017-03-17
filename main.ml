@@ -13,12 +13,14 @@ let main () =
   Arg.parse args (fun _ -> ()) "" ; 
 
   if not !silent then begin 
-    printf "\n#include <iostream>\n#include <fstream>\n#include <string>\nusing namespace std;\n\n";
     flush stdout ; 
   end ; 
   let lexbuf = Lexing.from_channel stdin in
   let imp_command = Parse.com Lex.initial lexbuf in
+  let env = Analyzer.empty_env in
   if not !silent then begin 
+    Analyzer.check_c imp_command env ;
+    printf "\n#include <iostream>\n#include <fstream>\n#include <string>\n    using namespace std;\n\n";
     print_string (Imp.find_include imp_command) ;
     printf "int main() {\n";
     print_string (Imp.com_to_str imp_command) ; 
@@ -28,7 +30,7 @@ let main () =
   let sigma_n =
     try
       Hw1.eval_com imp_command sigma_0
-    with Failure msg -> printf "%s" msg; sigma_0
+    with Failure msg -> printf "%s" :msg; sigma_0
   in
   ignore (sigma_n) ; 
   print_endline "" ; *)

@@ -6,7 +6,8 @@ all : clean imp
 
 IMP_OBJS = \
         imp.cmx \
-        parse.cmx \
+        analyzer.cmx \
+	parse.cmx \
         lex.cmx \
         main.cmx 
 

@@ -134,9 +134,9 @@ com :
 | IDENTIFIER WRITETO QUOTE IDENTIFIER QUOTE     { Writeto($1,$4) }
 
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER SET aexp                          { SetProto1($1,$3,$5,$7) }
-| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK INT RBRACK SET aexp    { SetProto2($1,$3,$5,$7,$10) }
+| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK aexp RBRACK SET aexp    { SetProto2($1,$3,$5,$7,$10) }
 | IDENTIFIER DOLLAR IDENTIFIER SET aexp                                 {     SetProto3($1,$3,$5) }
-| IDENTIFIER DOLLAR IDENTIFIER LBRACK INT RBRACK SET aexp               {     SetProto4($1,$3,$5,$8) }
+| IDENTIFIER DOLLAR IDENTIFIER LBRACK aexp RBRACK SET aexp               {     SetProto4($1,$3,$5,$8) }
 
 | IDENTIFIER DOLLAR IDENTIFIER LBRACK PLUS RBRACK aexp {AddEle1($1,$3,$7)}
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK PLUS RBRACK aexp {AddEle2($1,$3,$5,$9)}

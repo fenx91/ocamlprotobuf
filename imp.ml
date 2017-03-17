@@ -69,9 +69,9 @@ type com =
   | Writeto of loc * loc
  
   | SetProto1 of loc * exp_inside * loc * aexp
-  | SetProto2 of loc * exp_inside * loc * int * aexp
+  | SetProto2 of loc * exp_inside * loc * aexp * aexp
   | SetProto3 of loc * loc * aexp
-  | SetProto4 of loc * loc * int * aexp
+  | SetProto4 of loc * loc * aexp * aexp
 
   | AddEle1 of loc * loc * aexp  
   | AddEle2 of loc * exp_inside * loc * aexp
@@ -85,8 +85,6 @@ type com =
  * strings (that you can print out later with print_string, say). *) 
 module P = Printf 
 
-let string_of_program program = 
-    "\n#include <iostream>\n#include <string>/nusing namespace std;\n\n"
 
 
 let rec aexp_to_str a = match a with
@@ -157,11 +155,11 @@ and com_to_str c = match c with
  | SetProto1 (l1, e, l2, a) ->
       P.sprintf "%s.%s->set_%s(%s)" l1 (exp_inside_to_str e) l2 (aexp_to_str a)
   | SetProto2 (l1, e, l2, a, b) ->
-      P.sprintf "%s.%s->set_%s(%s,%s)" l1 (exp_inside_to_str e) l2 (string_of_int a) (aexp_to_str b)
+      P.sprintf "%s.%s->set_%s(%s,%s)" l1 (exp_inside_to_str e) l2 (aexp_to_str a) (aexp_to_str b)
   | SetProto3 (l1, l2, a) ->
       P.sprintf "%s.set_%s(%s)" l1 l2 (aexp_to_str a)
   | SetProto4 (l1, l2, a, b) ->
-      P.sprintf "%s.set_%s(%s, %s)" l1 l2 (string_of_int a) (aexp_to_str b)
+      P.sprintf "%s.set_%s(%s, %s)" l1 l2 (aexp_to_str a) (aexp_to_str b)
 
   | AddEle1 (l1, l2, a) ->
       P.sprintf "%s.add_%s(%s)" l1 l2 (aexp_to_str a)

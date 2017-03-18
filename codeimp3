@@ -1,0 +1,7 @@
+Integer x;
+Boolean y;
+String str;
+Protobuf person "address.proto" "Person";
+x := x / 3;
+y := (x > 3) ||!(person $ naoe > 4) ;
+str := pprint y

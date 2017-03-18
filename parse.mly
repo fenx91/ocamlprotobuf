@@ -13,8 +13,7 @@ let error msg	= failwith msg
 %}
 
 %token <string>         IDENTIFIER
-%token <int>            INT
-%token <string>         STRING
+%token <string>            INT
 
 %token PLUS 
 %token MINUS 
@@ -65,6 +64,7 @@ let error msg	= failwith msg
 %type <Imp.com> com
 
 %right SET
+%right LBRACK
 %right NOT
 
 %left AND
@@ -73,73 +73,72 @@ let error msg	= failwith msg
 %left TIMES
 %left L_TOK LE_TOK B_TOK BE_TOK EQ_TOK
 %left DOLLAR
+%left RBRACK
 
 %nonassoc ELSE
 %left COPYFROM
 %%
 
-aexp : INT                                   { Const($1) }
+index : INT					{IndexConst($1)}
+| IDENTIFIER					{IndexIden($1)}
+;
+
+exp : INT                                   { Const($1) }
 | IDENTIFIER                                 { Var $1}
-| aexp PLUS aexp                             { Add ($1,$3) } 
-| aexp MINUS aexp                            { Sub ($1,$3) } 
-| aexp TIMES aexp                            { Mul ($1,$3) } 
-| aexp DIV aexp                              { Div ($1,$3) } 
-| aexp MOD aexp                              { Mod ($1,$3) } 
-| LPAREN aexp RPAREN                         { $2 } 
-| pro_ele                                    { Proto $1} 
+| exp PLUS exp                             { Add ($1,$3) } 
+| exp MINUS exp                            { Sub ($1,$3) } 
+| exp TIMES exp                            { Mul ($1,$3) } 
+| exp DIV exp                              { Div ($1,$3) } 
+| exp MOD exp                              { Mod ($1,$3) } 
+| pro_ele                                    { Protoele $1} 
 | SIZEOF LPAREN IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER RPAREN  {  Sizeof1($3,$5,$7) }
 | SIZEOF LPAREN IDENTIFIER DOLLAR IDENTIFIER RPAREN  {  Sizeof2($3,$5) }
-;
-
-pro_ele: IDENTIFIER            {Var $1}     
-| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER                      {     AccessProto1($1,$3,$5) }
-| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK INT RBRACK    {     AccessProto2($1,$3,$5,$7) }
-| IDENTIFIER DOLLAR IDENTIFIER                       { AccessProto3($1,$3) }
-| IDENTIFIER DOLLAR IDENTIFIER LBRACK INT RBRACK { AccessProto4($1,$3,$5) }
-;
-
-bexp : TRUE                                  { True }
+| TRUE                                  { True }
 | FALSE                                      { False }
-| aexp EQ_TOK aexp                           { EQ ($1,$3) }
-| aexp LE_TOK aexp                           { LE($1,$3) }
-| aexp L_TOK aexp                            { L($1,$3) }
-| aexp B_TOK aexp                            { B($1,$3) }
-| aexp BE_TOK aexp                           { BE($1,$3) }
-| NOT bexp                                   { Not($2) }
-| bexp AND bexp                              { And($1,$3)  }
-| bexp OR bexp                               { Or($1,$3) }
-| LPAREN bexp RPAREN                         { $2 }
+| exp EQ_TOK exp                           { EQ ($1,$3) }
+| exp LE_TOK exp                           { LE($1,$3) }
+| exp L_TOK exp                            { L($1,$3) }
+| exp B_TOK exp                            { B($1,$3) }
+| exp BE_TOK exp                           { BE($1,$3) }
+| NOT exp                                   { Not($2) }
+| exp AND exp                              { And($1,$3)  }
+| exp OR exp                               { Or($1,$3) }
+| LPAREN exp RPAREN                         { $2 }
+| QUOTE IDENTIFIER QUOTE                     { Str($2) } 
+| PPRINT IDENTIFIER                          { PPrint($2) }
+;         
+
+pro_ele: IDENTIFIER            {Var $1}
+| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER                      {     AccessProto1($1,$3,$5) }
+| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK index RBRACK    {     AccessProto2($1,$3,$5,$7) }
+| IDENTIFIER DOLLAR IDENTIFIER                       { AccessProto3($1,$3) }
+| IDENTIFIER DOLLAR IDENTIFIER LBRACK index RBRACK { AccessProto4($1,$3,$5) }
 ;
 
-strexp: STRING                               { Str($1) } 
-| PPRINT IDENTIFIER                          { PPrint($2) }
-         
 com :
-| IDENTIFIER SET aexp                        { Setint($1,$3) }
-| IDENTIFIER SET bexp                        { Setbool($1,$3) }
-| IDENTIFIER SET strexp                      { Setstr ($1,$3) }
+| IDENTIFIER SET exp                         { Set($1,$3) }
  
 | com SEMICOLON com                          { Seq($1,$3) }
-| IF bexp THEN com END			     { If($2,$4) }
-| IF bexp THEN com END ELSE com END          { Ifelse($2,$4,$7) }
-| WHILE bexp DO com                          { While($2,$4) }
+| IF exp THEN com END			     { If($2,$4) }
+| IF exp THEN com END ELSE com END          { Ifelse($2,$4,$7) }
+| WHILE exp DO com                          { While($2,$4) }
 | PRINT IDENTIFIER                           { Print($2) }
-| LBRACE com RBRACE                          { $2 } 
+| LPAREN com RPAREN                          { $2 } 
 
 | DECLAREINT IDENTIFIER			     { Declareint($2) }
 | DECLAREBOOL IDENTIFIER                     { Declarebool($2) }
 | DECLARESTR IDENTIFIER                      { Declarestr($2) }
-| DECLAREPROTO IDENTIFIER QUOTE IDENTIFIER PERIOD IDENTIFIER QUOTE QUOTE IDENTIFIER QUOTE { Declareproto($2,$4,$9) } 
+| DECLAREPROTO IDENTIFIER QUOTE IDENTIFIER PERIOD IDENTIFIER QUOTE QUOTE IDENTIFIER QUOTE { Declareproto($2,$4,$6,$9) } 
 | IDENTIFIER READFROM QUOTE IDENTIFIER QUOTE    { Readfrom($1,$4) } 
 | IDENTIFIER WRITETO QUOTE IDENTIFIER QUOTE     { Writeto($1,$4) }
 
-| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER SET aexp                          { SetProto1($1,$3,$5,$7) }
-| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK aexp RBRACK SET aexp    { SetProto2($1,$3,$5,$7,$10) }
-| IDENTIFIER DOLLAR IDENTIFIER SET aexp                                 {     SetProto3($1,$3,$5) }
-| IDENTIFIER DOLLAR IDENTIFIER LBRACK aexp RBRACK SET aexp               {     SetProto4($1,$3,$5,$8) }
+| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER SET exp                          { SetProto1($1,$3,$5,$7) }
+| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK index RBRACK SET exp    { SetProto2($1,$3,$5,$7,$10) }
+| IDENTIFIER DOLLAR IDENTIFIER SET exp                                 { SetProto3($1,$3,$5) }
+| IDENTIFIER DOLLAR IDENTIFIER LBRACK index RBRACK SET exp               { SetProto4($1,$3,$5,$8) }
 
-| IDENTIFIER DOLLAR IDENTIFIER LBRACK PLUS RBRACK aexp {AddEle1($1,$3,$7)}
-| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK PLUS RBRACK aexp {AddEle2($1,$3,$5,$9)}
+| IDENTIFIER DOLLAR IDENTIFIER LBRACK PLUS RBRACK exp {AddEle1($1,$3,$7)}
+| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK PLUS RBRACK exp {AddEle2($1,$3,$5,$9)}
 | IDENTIFIER DOLLAR IDENTIFIER LBRACK PLUS RBRACK {AddEle3($1,$3)}
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK PLUS RBRACK  {AddEle4($1,$3,$5)}
 | pro_ele COPYFROM pro_ele { Copyfrom($1,$3) }
@@ -148,6 +147,5 @@ com :
 
 exp_inside :
   IDENTIFIER  { ExpEle1 $1 }
-| IDENTIFIER LBRACK INT RBRACK  { ExpEle2 ($1, $3) } 
-| exp_inside DOLLAR exp_inside         { ExpEle3 ($1, $3) }
-;
+| IDENTIFIER LBRACK index RBRACK  { ExpEle2 ($1, $3) } 
+| exp_inside DOLLAR exp_inside         { ExpEle3 ($1, $3) };

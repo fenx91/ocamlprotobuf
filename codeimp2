@@ -1,1 +1,5 @@
-y := 1
+Protobuf x "x.proto" "x";
+Integer i;
+x $ a[1] := 1;
+x $ a[i] := 2;
+x $ a[3] $ b[5] $ c $ y := x + 1

@@ -1,7 +1,6 @@
 type token =
   | IDENTIFIER of (string)
-  | INT of (int)
-  | STRING of (string)
+  | INT of (string)
   | PLUS
   | MINUS
   | TIMES

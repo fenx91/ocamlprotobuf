@@ -27,9 +27,9 @@ rule initial = parse
 | "<="          { LE_TOK }
 | ">"           { B_TOK }
 | ">="          { BE_TOK }
-| "not"         { NOT }
-| "and"         { AND }
-| "or"          { OR }
+| "!"           { NOT }
+| "&&"          { AND }
+| "||"          { OR }
 | "skip"        { SKIP }
 | ":="          { SET }
 | ';'           { SEMICOLON }
@@ -62,7 +62,7 @@ rule initial = parse
 
 | ("0x")?'-'?['0'-'9']+ {
   let str = Lexing.lexeme lexbuf in 
-  INT((int_of_string str)) }
+  INT(str) }
 
 | ['A'-'Z''a'-'z''_']['0'-'9''A'-'Z''a'-'z''_']* {
   let str = Lexing.lexeme lexbuf in 

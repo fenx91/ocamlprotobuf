@@ -47,4 +47,4 @@ type token =
   | EOF
 
 val com :
-  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> Imp.com
+  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> Pf.com

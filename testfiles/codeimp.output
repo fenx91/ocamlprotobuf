@@ -1,0 +1,19 @@
+age: 18
+names: 4
+names: 3
+names: 4
+names: 3
+home {
+  address: 10086
+}
+phones {
+  number: 3538
+}
+phones {
+  number: 2100
+}
+phones {
+}
+phones {
+}
+

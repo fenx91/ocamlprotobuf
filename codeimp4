@@ -1,0 +1,6 @@
+Integer x;
+x := 3;
+while x < 6 do
+x := x + 1
+end;
+print x

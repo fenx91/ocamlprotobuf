@@ -1,9 +1,6 @@
 {
 (* 
- * Lexer for our IMP concrete syntax. 
- * See http://caml.inria.fr/pub/docs/manual-ocaml/manual026.html
- * but basically it works just like Lex.
- * See http://en.wikipedia.org/wiki/Lex
+ * Lexer for PF. 
  *)
 open Parse
 } 
@@ -64,10 +61,11 @@ rule initial = parse
   let str = Lexing.lexeme lexbuf in 
   INT(str) }
 
-| ['A'-'Z''a'-'z''_']['0'-'9''A'-'Z''a'-'z''_']* {
+| ['A'-'Z''a'-'z''_']['0'-'9''A'-'Z''a'-'z''_''/']* {
   let str = Lexing.lexeme lexbuf in 
   IDENTIFIER(str)
   } 
+
 | eof     { EOF } 
 | _       { 
   Printf.printf "invalid character '%s'\n" (Lexing.lexeme lexbuf) ;

@@ -6,7 +6,7 @@ age := 4;
  
 if (true) then
   Protobuf person "person.proto" "Person";
-  person readfrom "result";
+  person readfrom "testfiles/result";
   person $ age := 18;
   person $ names[+] 4;
   person $ names[+] 3;
@@ -18,5 +18,5 @@ if (true) then
   String str;
   str := pprint person;
   print str;
-  person writeto "result2"
+  person writeto "testfiles/result2"
 end 

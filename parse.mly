@@ -1,19 +1,16 @@
 %{
 (* 
- * Parser for our IMP concrete syntax. 
- * See http://caml.inria.fr/pub/docs/manual-ocaml/manual026.html
- * but basically it works just like Yacc/Bison.
- * See http://en.wikipedia.org/wiki/YACC
+ * Parser for PF language. 
  *)
 
-open Imp		    (* IMP abstract syntax *)
+open Pf		  
 
 let error msg	= failwith msg
 
 %}
 
 %token <string>         IDENTIFIER
-%token <string>            INT
+%token <string>         INT
 
 %token PLUS 
 %token MINUS 
@@ -61,7 +58,7 @@ let error msg	= failwith msg
 %token EOF
 
 %start com
-%type <Imp.com> com
+%type <Pf.com> com
 
 %right SET
 %right LBRACK
@@ -108,7 +105,7 @@ exp : INT                                   { Const($1) }
 | PPRINT IDENTIFIER                          { PPrint($2) }
 ;         
 
-pro_ele: IDENTIFIER            {Var $1}
+pro_ele:   
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER                      {     AccessProto1($1,$3,$5) }
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK index RBRACK    {     AccessProto2($1,$3,$5,$7) }
 | IDENTIFIER DOLLAR IDENTIFIER                       { AccessProto3($1,$3) }
@@ -120,8 +117,8 @@ com :
  
 | com SEMICOLON com                          { Seq($1,$3) }
 | IF exp THEN com END			     { If($2,$4) }
-| IF exp THEN com END ELSE com END          { Ifelse($2,$4,$7) }
-| WHILE exp DO com                          { While($2,$4) }
+| IF exp THEN com END ELSE com END           { Ifelse($2,$4,$7) }
+| WHILE exp DO com END                       { While($2,$4) }
 | PRINT IDENTIFIER                           { Print($2) }
 | LPAREN com RPAREN                          { $2 } 
 

@@ -5,5 +5,5 @@ Integer i;
 Boolean s;
 x $ y[i] $a[i] := 1;
 i := x $ d;
-x $ sdfs[s] $ persen[+] 3 
+x $ sdfs[i] $ persen[+] 3 
 //x $ a[3] $ b[5] $ c $ y := i + 1

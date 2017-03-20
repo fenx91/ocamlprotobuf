@@ -1,0 +1,13 @@
+rm -f -f *.cmi *.cmx *.o *.cmo *~ lex.ml parse.ml parse.mli pf pf.exe
+ocamlopt -c pf.ml
+ocamlopt -c analyzer.ml
+ocamlyacc parse.mly 
+47 shift/reduce conflicts.
+ocamlopt -c parse.mli
+ocamlopt -c parse.ml
+ocamllex lex.mll 
+154 states, 7757 transitions, table size 31952 bytes
+ocamlopt -c lex.ml
+ocamlopt -c main.ml
+ocamlopt -o pf pf.cmx analyzer.cmx parse.cmx lex.cmx main.cmx 
+rm lex.ml

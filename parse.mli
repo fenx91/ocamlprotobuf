@@ -40,6 +40,7 @@ type token =
   | END
   | PERIOD
   | DOLLAR
+  | QUESTION
   | READFROM
   | WRITETO
   | COPYFROM

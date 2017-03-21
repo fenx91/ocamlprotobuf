@@ -3,7 +3,20 @@ Protobuf y "y.proto" "y";
 x := y;
 Integer i;
 Boolean s;
-x $ y[i] $a[i] := 1;
-i := x $ d;
+/*x $ y[i] $a[i] := 1;
+/*i := x $ d;
+/*
+*/
 x $ sdfs[i] $ persen[+] 3 
+/*
+
+and comment2 = parse
+      "*)"  { () }
+|     '\n'  { comment2 lexbuf }
+|     "(*"  { (* ML-style comments can be nested *) 
+              let _ = comment2 lexbuf in comment2 lexbuf }
+|     eof   { Printf.printf "unterminated (* comment\n" ; exit 1 }
+|     _     { comment2 lexbuf }
+*/
+
 //x $ a[3] $ b[5] $ c $ y := i + 1

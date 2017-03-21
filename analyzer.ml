@@ -110,7 +110,16 @@ let rec check_exp (e: exp) (en: env): string = match e with
                     let t1 = check_exp b2 en in
         if (t1 = "Bool" || t1 = "Proto_ele") && (t2 = "Bool" || t2 = "Proto_ele")  then "Bool" else
         failwith ("Logical operators can work on boolean types only!") 
- 
+
+  | HasProto2 (l1, l2) -> let t1 = lookup en l1 in
+          if (t1 = "") then failwith ("Undefined Protobuf variable: " ^ l1) else
+        if not(t1 = "Proto") then failwith ("Protobuf operator works on Protobuf variables only!") else "BooL"
+  | HasProto1 (l1, e, l2) -> let t1 = lookup en l1 in
+                                let t2 = check_exp_inside e en in
+     if (t1 = "") then failwith ("Undefined Protobuf variable: " ^ l1) else
+     if not(t1 = "Proto") then failwith ("Protobuf operator works on Protobuf variables only!") else
+     if not(t2) then failwith ("Protobuf element access error!") else "Bool"
+
   | Str (s) -> "String"
   | PPrint (l) -> let t = lookup en l in 
         if (t = "Proto") then "String" else

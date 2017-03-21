@@ -51,6 +51,7 @@ let error msg	= failwith msg
 %token END
 %token PERIOD
 %token DOLLAR
+%token QUESTION
 %token READFROM
 %token WRITETO
 %token COPYFROM
@@ -103,6 +104,10 @@ exp : INT                                   { Const($1) }
 | LPAREN exp RPAREN                         { $2 }
 | QUOTE IDENTIFIER QUOTE                     { Str($2) } 
 | PPRINT IDENTIFIER                          { PPrint($2) }
+
+| IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER QUESTION     { HasProto1($1,$3,$5) }
+| IDENTIFIER DOLLAR IDENTIFIER QUESTION                       { HasProto2($1,$3) }
+ 
 ;         
 
 pro_ele:   

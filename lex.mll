@@ -9,7 +9,6 @@ let blank = [' ' '\012' '\r' '\t' '\n']
 
 rule initial = parse
   "/*"  { let _ = comment lexbuf in initial lexbuf }
-| "(*"  { let _ = comment2 lexbuf in initial lexbuf }
 | "//"  { endline lexbuf }
 | blank { initial lexbuf }
 | '+'           { PLUS }
@@ -49,6 +48,7 @@ rule initial = parse
 | "."           { PERIOD }
 | "\""		{ QUOTE }
 | "$"           { DOLLAR }
+| "?"           { QUESTION }
 
 | '('           { LPAREN }
 | ')'           { RPAREN } 
@@ -77,13 +77,6 @@ and comment = parse
 |     '\n'  { comment lexbuf }
 |     eof   { Printf.printf "unterminated /* comment\n" ; exit 1 }
 |     _     { comment lexbuf }
-and comment2 = parse
-      "*)"  { () }
-|     '\n'  { comment2 lexbuf }
-|     "(*"  { (* ML-style comments can be nested *) 
-              let _ = comment2 lexbuf in comment2 lexbuf }
-|     eof   { Printf.printf "unterminated (* comment\n" ; exit 1 }
-|     _     { comment2 lexbuf }
 and endline = parse
         '\n'      { initial lexbuf}
 | _               { endline lexbuf}

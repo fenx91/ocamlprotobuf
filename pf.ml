@@ -42,6 +42,9 @@ type exp =
   | And of exp * exp          (* b0 /\ b1 *) (* b0 && b1 *) 
   | Or of exp * exp           (* b0 \/ b1 *) (* b0 || b1 *) 
 
+  | HasProto1 of loc * exp_inside * loc
+  | HasProto2 of loc * loc
+
 (*string exp*)
   | Str of string
   | PPrint of loc 
@@ -110,6 +113,12 @@ and exp_to_str a = match a with
 (*string exp*)
   | Str (s) -> P.sprintf "\"%s\"" s
   | PPrint (l) -> P.sprintf "%s.DebugString()" l
+ 
+  | HasProto1 (l1, e, l2) ->
+      P.sprintf "%s.%s->has_%s()" l1 (exp_inside_to_str e) l2
+  | HasProto2 (l1, l2) ->
+      P.sprintf "%s.has_%s()" l1 l2 
+
 
 and pro_ele_to_str p = match p with
   | AccessProto1 (l1, e, l2) ->

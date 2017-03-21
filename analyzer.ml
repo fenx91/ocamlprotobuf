@@ -163,6 +163,7 @@ let rec check_com (c: com) (en: env): env = match c with
   | Writeto(l1, l2) -> let t1 = lookup en l1 in
      if (t1 = "Proto") then en
      else failwith ("writeto works on Protobuf variables only!")
+  | Copyfrom(e, l) -> en;
   | SetProto1 (l1, e, l2, a) -> let t = lookup en l1 in
      if (t = "") then failwith ("Undefined Protobuf variable: " ^ l1) else
      if not (t = "Proto") then failwith (l1 ^ " is not a Protobuf variable!") 
@@ -204,4 +205,3 @@ let rec check_com (c: com) (en: env): env = match c with
      if not (t = "Proto") then failwith (l1 ^ " is not a Protobuf variable!") 
      else if not(check_exp_inside e en)
      then failwith ("Protobuf element access error!") else en
-  | Copyfrom (p1, p2) -> en

@@ -27,6 +27,7 @@ type token =
   | PRINT
   | PPRINT
   | LPAREN
+  | COPYFROM
   | RPAREN
   | LBRACE
   | RBRACE
@@ -43,7 +44,6 @@ type token =
   | QUESTION
   | READFROM
   | WRITETO
-  | COPYFROM
   | SIZEOF
   | EOF
 

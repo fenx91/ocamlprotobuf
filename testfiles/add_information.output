@@ -1,0 +1,7 @@
+person {
+  name: "Lily"
+  age: 26
+  id: 2013210746
+  registed: true
+}
+

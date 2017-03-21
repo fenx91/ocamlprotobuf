@@ -73,8 +73,7 @@ type com =
   | AddEle2 of loc * exp_inside * loc * exp
   | AddEle3 of loc * loc
   | AddEle4 of loc * exp_inside * loc
-
-  | Copyfrom of pro_ele * pro_ele
+  | Copyfrom of exp * loc
  
 
 module P = Printf 
@@ -148,7 +147,7 @@ and com_to_str c = match c with
       P.sprintf "fstream input(\"%s\",ios::in | ios::binary);\n%s.ParseFromIstream(&input)" l2 l1
   | Writeto (l1, l2) -> 
       P.sprintf "fstream output(\"%s\",ios::out | ios::binary);\n%s.SerializeToOstream(&output)" l2 l1
- 
+  | Copyfrom (e, l) -> P.sprintf "const_cast(%s) = %s"(exp_to_str e) l
 
   | SetProto1 (l1, e, l2, a) ->
       P.sprintf "%s.%s->set_%s(%s)" l1 (exp_inside_to_str e) l2 (exp_to_str a)
@@ -167,8 +166,6 @@ and com_to_str c = match c with
       P.sprintf "%s.add_%s()" l1 l2
   | AddEle4 (l1, e, l2) ->
       P.sprintf "%s.%s->add_%s()" l1 (exp_inside_to_str e) l2
-  | Copyfrom (p1, p2) ->
-      P.sprintf "%s = %s" (pro_ele_to_str p1) (pro_ele_to_str p2)
 
 
 and exp_inside_to_str e = match e with
@@ -192,6 +189,7 @@ let rec find_include c = match c with
   | Declareproto (l1, l2, s, l3) -> P.sprintf "#include \"%s.pb.h\"\n" l2
   | Readfrom (l1, l2) -> ""
   | Writeto (l1, l2) -> ""
+  | Copyfrom (e, l) -> ""
   | SetProto1 (l1, e,l2, a) -> ""
   | SetProto2 (l1, e, l2, a ,b) -> ""
   | SetProto3 (l1, l2, a) -> ""
@@ -200,4 +198,3 @@ let rec find_include c = match c with
   | AddEle2 (l1, e, l2, a) -> ""
   | AddEle3 (l1, l2) -> ""
   | AddEle4 (l1, e,l2) -> ""
-  | Copyfrom (p1, p2) -> ""

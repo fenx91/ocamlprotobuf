@@ -1,0 +1,27 @@
+syntax = "proto2";
+message Phone {
+  required int32 number = 1;
+  optional string type = 2;
+}
+
+message Exam { 
+  optional int32 score = 2;
+}
+
+message Grade {
+  repeated int32 homework = 2;
+  optional Exam exams = 3; 
+}
+
+message Person {
+  required string name = 1;
+  optional int32 age = 2;
+  repeated int32 id = 3; 
+  repeated Phone phones= 4;
+  optional bool registed = 5;
+  repeated Grade grades = 6;
+}
+
+message Students_information {
+  repeated Person person = 1;
+}

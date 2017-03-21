@@ -26,7 +26,6 @@ rule initial = parse
 | "!"           { NOT }
 | "&&"          { AND }
 | "||"          { OR }
-| "skip"        { SKIP }
 | ":="          { SET }
 | ';'           { SEMICOLON }
 | "if"          { IF }
@@ -43,8 +42,8 @@ rule initial = parse
 | "Protobuf"	{ DECLAREPROTO }
 | "readfrom"    { READFROM }
 | "writeto"     { WRITETO }
-| "copyfrom"    { COPYFROM }
 | "sizeof"      { SIZEOF }
+| "copyfrom"    { COPYFROM }
 | "."           { PERIOD }
 | "\""		{ QUOTE }
 | "$"           { DOLLAR }
@@ -67,15 +66,15 @@ rule initial = parse
   } 
 
 | eof     { EOF } 
-| _       { 
-  Printf.printf "invalid character '%s'\n" (Lexing.lexeme lexbuf) ;
+| _     { 
+  raise(Failure("invalid character")) ;
   (* this is not the kind of error handling you want in real life *)
-  exit 1 }
+          }
 
 and comment = parse
       "*/"  { () }
 |     '\n'  { comment lexbuf }
-|     eof   { Printf.printf "unterminated /* comment\n" ; exit 1 }
+|     eof   { raise(Failure("unterminated /* comment\n" )); }
 |     _     { comment lexbuf }
 and endline = parse
         '\n'      { initial lexbuf}

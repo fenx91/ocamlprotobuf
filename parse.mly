@@ -38,6 +38,7 @@ let error msg	= failwith msg
 %token PRINT
 %token PPRINT
 %token LPAREN
+%token COPYFROM
 %token RPAREN
 %token LBRACE
 %token RBRACE
@@ -54,7 +55,6 @@ let error msg	= failwith msg
 %token QUESTION
 %token READFROM
 %token WRITETO
-%token COPYFROM
 %token SIZEOF
 %token EOF
 
@@ -143,7 +143,7 @@ com :
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK PLUS RBRACK exp {AddEle2($1,$3,$5,$9)}
 | IDENTIFIER DOLLAR IDENTIFIER LBRACK PLUS RBRACK {AddEle3($1,$3)}
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK PLUS RBRACK  {AddEle4($1,$3,$5)}
-| pro_ele COPYFROM pro_ele { Copyfrom($1,$3) }
+| exp COPYFROM IDENTIFIER {Copyfrom($1, $3)}
 ;
 
 

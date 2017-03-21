@@ -1,0 +1,23 @@
+Protobuf stu_info "address.proto" "Students_information";
+Protobuf person
+if ((sizeof (stu_info $ person)) == 0) then
+   stu_info $ person[+];
+   stu_info $ person[+]
+end;
+stu_info $ person[0] $ name := "Lily";
+stu_info $ person[1] $ name := "Shawn";
+stu_info $ person[0] $ age := 26;
+stu_info $ person[0] $ registed := true;
+stu_info $ person[0] $ id[+] 2013210746;
+Integer x;
+x := 0; 
+while (x < 3) do 
+stu_info $ person[0] $ grades[+];
+stu_info $ person[0] $ grades[x] $ homework[+] 92;
+
+
+end;
+String str;
+str := pprint stu_info;
+print str
+ 

@@ -1,10 +1,13 @@
 Protobuf grade_amy "information.proto" "Grade" ; 
+// Add four homework scores.
 grade_amy $ homework [+] 97 ;
 grade_amy $ homework [+] 84 ;
 grade_amy $ homework [+] 93 ;
 grade_amy $ homework [+] 89 ;
+// Add the score and weight of the exam.
 grade_amy $ exam $ score := 100 ;
 grade_amy $ exam $ weight := 3 ;
+// Access elements in grade_amy to count the final grade.
 Integer total ;
 Integer i ;
 total := 0 ;
@@ -16,7 +19,9 @@ end ;
 total := total + grade_amy $ exam $ score * grade_amy $ exam $ weight ;
 total := total / 7 ;
 grade_amy $ total := total ;
+// Pretty print grade_amy to screen.
 String str ;
 str := pprint grade_amy ;
 print str ;
+// Serialize and write grade_amy to file.
 grade_amy writeto "testfiles/grade_amy" 

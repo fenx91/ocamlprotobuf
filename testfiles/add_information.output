@@ -2,7 +2,7 @@ person {
   name: "Amy"
   age: 26
   id: 2013210746
-  registed: true
+  registered: true
   grades {
     total: 94
     homework: 97

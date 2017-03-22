@@ -38,9 +38,6 @@ extern GradeDefaultTypeInternal _Grade_default_instance_;
 class Person;
 class PersonDefaultTypeInternal;
 extern PersonDefaultTypeInternal _Person_default_instance_;
-class Phone;
-class PhoneDefaultTypeInternal;
-extern PhoneDefaultTypeInternal _Phone_default_instance_;
 class Students_information;
 class Students_informationDefaultTypeInternal;
 extern Students_informationDefaultTypeInternal _Students_information_default_instance_;
@@ -57,119 +54,6 @@ void InitDefaults();
 }  // namespace protobuf_information_2eproto
 
 // ===================================================================
-
-class Phone : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Phone) */ {
- public:
-  Phone();
-  virtual ~Phone();
-
-  Phone(const Phone& from);
-
-  inline Phone& operator=(const Phone& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Phone& default_instance();
-
-  static inline const Phone* internal_default_instance() {
-    return reinterpret_cast<const Phone*>(
-               &_Phone_default_instance_);
-  }
-
-  void Swap(Phone* other);
-
-  // implements Message ----------------------------------------------
-
-  inline Phone* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  Phone* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const Phone& from);
-  void MergeFrom(const Phone& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
-      const PROTOBUF_FINAL {
-    return InternalSerializeWithCachedSizesToArray(
-        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
-  }
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(Phone* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // optional string type = 2;
-  bool has_type() const;
-  void clear_type();
-  static const int kTypeFieldNumber = 2;
-  const ::std::string& type() const;
-  void set_type(const ::std::string& value);
-  #if LANG_CXX11
-  void set_type(::std::string&& value);
-  #endif
-  void set_type(const char* value);
-  void set_type(const char* value, size_t size);
-  ::std::string* mutable_type();
-  ::std::string* release_type();
-  void set_allocated_type(::std::string* type);
-
-  // required int32 number = 1;
-  bool has_number() const;
-  void clear_number();
-  static const int kNumberFieldNumber = 1;
-  ::google::protobuf::int32 number() const;
-  void set_number(::google::protobuf::int32 value);
-
-  // @@protoc_insertion_point(class_scope:Phone)
- private:
-  void set_has_number();
-  void clear_has_number();
-  void set_has_type();
-  void clear_has_type();
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::HasBits<1> _has_bits_;
-  mutable int _cached_size_;
-  ::google::protobuf::internal::ArenaStringPtr type_;
-  ::google::protobuf::int32 number_;
-  friend struct  protobuf_information_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
 
 class Exam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Exam) */ {
  public:
@@ -483,18 +367,6 @@ class Person : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
       mutable_id();
 
-  // repeated .Phone phones = 4;
-  int phones_size() const;
-  void clear_phones();
-  static const int kPhonesFieldNumber = 4;
-  const ::Phone& phones(int index) const;
-  ::Phone* mutable_phones(int index);
-  ::Phone* add_phones();
-  ::google::protobuf::RepeatedPtrField< ::Phone >*
-      mutable_phones();
-  const ::google::protobuf::RepeatedPtrField< ::Phone >&
-      phones() const;
-
   // repeated .Grade grades = 6;
   int grades_size() const;
   void clear_grades();
@@ -529,12 +401,12 @@ class Person : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::google::protobuf::int32 age() const;
   void set_age(::google::protobuf::int32 value);
 
-  // optional bool registed = 5;
-  bool has_registed() const;
-  void clear_registed();
-  static const int kRegistedFieldNumber = 5;
-  bool registed() const;
-  void set_registed(bool value);
+  // optional bool registered = 5;
+  bool has_registered() const;
+  void clear_registered();
+  static const int kRegisteredFieldNumber = 5;
+  bool registered() const;
+  void set_registered(bool value);
 
   // @@protoc_insertion_point(class_scope:Person)
  private:
@@ -542,18 +414,17 @@ class Person : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   void clear_has_name();
   void set_has_age();
   void clear_has_age();
-  void set_has_registed();
-  void clear_has_registed();
+  void set_has_registered();
+  void clear_has_registered();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > id_;
-  ::google::protobuf::RepeatedPtrField< ::Phone > phones_;
   ::google::protobuf::RepeatedPtrField< ::Grade > grades_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::int32 age_;
-  bool registed_;
+  bool registered_;
   friend struct  protobuf_information_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -660,96 +531,6 @@ class Students_information : public ::google::protobuf::Message /* @@protoc_inse
 // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
-// Phone
-
-// required int32 number = 1;
-inline bool Phone::has_number() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void Phone::set_has_number() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void Phone::clear_has_number() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void Phone::clear_number() {
-  number_ = 0;
-  clear_has_number();
-}
-inline ::google::protobuf::int32 Phone::number() const {
-  // @@protoc_insertion_point(field_get:Phone.number)
-  return number_;
-}
-inline void Phone::set_number(::google::protobuf::int32 value) {
-  set_has_number();
-  number_ = value;
-  // @@protoc_insertion_point(field_set:Phone.number)
-}
-
-// optional string type = 2;
-inline bool Phone::has_type() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void Phone::set_has_type() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void Phone::clear_has_type() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void Phone::clear_type() {
-  type_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_type();
-}
-inline const ::std::string& Phone::type() const {
-  // @@protoc_insertion_point(field_get:Phone.type)
-  return type_.GetNoArena();
-}
-inline void Phone::set_type(const ::std::string& value) {
-  set_has_type();
-  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Phone.type)
-}
-#if LANG_CXX11
-inline void Phone::set_type(::std::string&& value) {
-  set_has_type();
-  type_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Phone.type)
-}
-#endif
-inline void Phone::set_type(const char* value) {
-  set_has_type();
-  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Phone.type)
-}
-inline void Phone::set_type(const char* value, size_t size) {
-  set_has_type();
-  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Phone.type)
-}
-inline ::std::string* Phone::mutable_type() {
-  set_has_type();
-  // @@protoc_insertion_point(field_mutable:Phone.type)
-  return type_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Phone::release_type() {
-  // @@protoc_insertion_point(field_release:Phone.type)
-  clear_has_type();
-  return type_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Phone::set_allocated_type(::std::string* type) {
-  if (type != NULL) {
-    set_has_type();
-  } else {
-    clear_has_type();
-  }
-  type_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), type);
-  // @@protoc_insertion_point(field_set_allocated:Phone.type)
-}
-
-// -------------------------------------------------------------------
-
 // Exam
 
 // optional int32 weight = 2;
@@ -1023,58 +804,28 @@ Person::mutable_id() {
   return &id_;
 }
 
-// repeated .Phone phones = 4;
-inline int Person::phones_size() const {
-  return phones_.size();
-}
-inline void Person::clear_phones() {
-  phones_.Clear();
-}
-inline const ::Phone& Person::phones(int index) const {
-  // @@protoc_insertion_point(field_get:Person.phones)
-  return phones_.Get(index);
-}
-inline ::Phone* Person::mutable_phones(int index) {
-  // @@protoc_insertion_point(field_mutable:Person.phones)
-  return phones_.Mutable(index);
-}
-inline ::Phone* Person::add_phones() {
-  // @@protoc_insertion_point(field_add:Person.phones)
-  return phones_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::Phone >*
-Person::mutable_phones() {
-  // @@protoc_insertion_point(field_mutable_list:Person.phones)
-  return &phones_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::Phone >&
-Person::phones() const {
-  // @@protoc_insertion_point(field_list:Person.phones)
-  return phones_;
-}
-
-// optional bool registed = 5;
-inline bool Person::has_registed() const {
+// optional bool registered = 5;
+inline bool Person::has_registered() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Person::set_has_registed() {
+inline void Person::set_has_registered() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Person::clear_has_registed() {
+inline void Person::clear_has_registered() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void Person::clear_registed() {
-  registed_ = false;
-  clear_has_registed();
+inline void Person::clear_registered() {
+  registered_ = false;
+  clear_has_registered();
 }
-inline bool Person::registed() const {
-  // @@protoc_insertion_point(field_get:Person.registed)
-  return registed_;
+inline bool Person::registered() const {
+  // @@protoc_insertion_point(field_get:Person.registered)
+  return registered_;
 }
-inline void Person::set_registed(bool value) {
-  set_has_registed();
-  registed_ = value;
-  // @@protoc_insertion_point(field_set:Person.registed)
+inline void Person::set_registered(bool value) {
+  set_has_registered();
+  registered_ = value;
+  // @@protoc_insertion_point(field_set:Person.registered)
 }
 
 // repeated .Grade grades = 6;
@@ -1142,8 +893,6 @@ Students_information::person() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

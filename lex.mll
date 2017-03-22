@@ -68,7 +68,6 @@ rule initial = parse
 | eof     { EOF } 
 | _     { 
   raise(Failure("invalid character")) ;
-  (* this is not the kind of error handling you want in real life *)
           }
 
 and comment = parse

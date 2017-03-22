@@ -14,8 +14,7 @@ message Person {
   required string name = 1;
   optional int32 age = 2;
   repeated int32 id = 3; 
-  repeated Phone phones= 4;
-  optional bool registed = 5;
+  optional bool registered = 5;
   repeated Grade grades = 6;
 }
 

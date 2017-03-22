@@ -1,15 +1,20 @@
 Protobuf stu_info "information.proto" "Students_information";
+// If the stu_info does not have person message, then we add two to it.
 if ((sizeof (stu_info $ person)) == 0) then
    stu_info $ person[+];
    stu_info $ person[+]
 end;
+// Add name to each person message.  
 stu_info $ person[0] $ name := "Amy";
 stu_info $ person[1] $ name := "Shawn";
+// Add more information for the first person.
 stu_info $ person[0] $ age := 26;
-stu_info $ person[0] $ registed := true;
+stu_info $ person[0] $ registered := true;
 stu_info $ person[0] $ id[+] 2013210746;
+// Pretty print stu_info to the screen.
 String str;
 str := pprint stu_info;
 print str;
+// Serialize and then write the stu_info to file.
 stu_info writeto "testfiles/stu_info"
  

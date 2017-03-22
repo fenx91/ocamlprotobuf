@@ -1,0 +1,10 @@
+person {
+  name: "Amy"
+  age: 26
+  id: 2013210746
+  registered: true
+}
+person {
+  name: "Shawn"
+}
+

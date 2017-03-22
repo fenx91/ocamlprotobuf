@@ -1,12 +1,18 @@
 Protobuf stu_info "information.proto" "Students_information";
 Protobuf grade_amy "information.proto" "Grade"; 
-
+// Read and parse two Protobuf variables from files.
 stu_info readfrom "testfiles/stu_info" 1;
 grade_amy readfrom "testfiles/grade_amy" 2;
 
-if (stu_info $ person[0] $ name == "Amy") then
-
-if (stu_info $ person[0] $ registed ?) && (stu_info $ person[0] $ registed) then
+/* If the name of the first person if "Amy" then we write her
+   grade information from grade_amy to stu_info. Otherwise
+   we print "name_does_not_match".
+*/
+/* If the first person in stu_info has registered message and 
+   the registered message has value true, we add her information.
+*/
+if (stu_info $ person[0] $ name == "Amy") then  
+if (stu_info $ person[0] $ registered ?) && (stu_info $ person[0] $ registered) then
 
 stu_info $ person[0] $ grades[+];
 Integer temp;
@@ -14,16 +20,14 @@ Integer index;
 index := sizeof (stu_info $ person[0] $ grades) - 1;
 temp := grade_amy $ total;
 stu_info $ person[0] $ grades[index] $ total := temp;
-
 temp := grade_amy $ exam $ weight;
 stu_info $ person[0] $ grades[index] $ exam $ weight := temp;
-
 temp := grade_amy $ exam $ score;
 stu_info $ person[0] $ grades[index] $ exam $ score := temp;
 
+// Add the homework score.
 Integer i;
 i := 0;
-
 while (i < sizeof (grade_amy $ homework)) do
 temp := grade_amy $ homework[i];
 stu_info $ person[0] $ grades[index] $ homework[+] temp;
@@ -32,9 +36,9 @@ end
 
 end
 else
-print "Cannot_add_information"
+print "name_does_not_match"
 end;
-
+// Pretty print modified stu_info to screen.
 String str;
 str := pprint stu_info;
 print str

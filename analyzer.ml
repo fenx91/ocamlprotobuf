@@ -81,7 +81,7 @@ let rec check_exp (e: exp) (en: env): string = match e with
   | True -> "Bool"
   | EQ (a, b) -> let t1 = check_exp a en in
                  let t2 = check_exp b en in
-        if (t1 = "Integer" || t1 = "Proto_ele") && (t2 = "Integer" || t2 = "Prot_ele")
+        if ((t1 = "Integer" || t1 = "Proto_ele") && (t2 = "Integer" || t2 = "Prot_ele")) || ((t1 = "Proto_ele" || t1 = "String") && (t2 = "String" || t2 = "Prot_ele"))
         then "Bool" else failwith ("Comparison operators can work on Number types only!")
   | LE (a, b) -> let t1 = check_exp a en in
                  let t2 = check_exp b en in
@@ -157,10 +157,17 @@ let rec check_com (c: com) (en: env): env = match c with
   | Declarestr l -> StringMap.add l "String" en
   | Declareproto (l1, l2, s, l3) -> if not (s = "proto") then failwith ("Please provide the correct .proto file!") else
      StringMap.add l1 "Proto" en
+
   | Readfrom(l1, l2) -> let t1 = lookup en l1 in
      if (t1 = "Proto") then en 
      else failwith ("readfrom works on Protobuf variables only!")
   | Writeto(l1, l2) -> let t1 = lookup en l1 in
+     if (t1 = "Proto") then en
+     else failwith ("writeto works on Protobuf variables only!")
+  | Readfrom1(l1, l2, n) -> let t1 = lookup en l1 in
+     if (t1 = "Proto") then en 
+     else failwith ("readfrom works on Protobuf variables only!")
+  | Writeto1(l1, l2, n) -> let t1 = lookup en l1 in
      if (t1 = "Proto") then en
      else failwith ("writeto works on Protobuf variables only!")
   | Copyfrom(e, l) -> en;

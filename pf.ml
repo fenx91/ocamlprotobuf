@@ -55,14 +55,17 @@ type com =
   | If of exp * com		(* if b then c end *)
   | Ifelse of exp * com * com  (* if b then c0 end else c1 end *)
   | While of exp * com         (* while b do c *)
-  | Print of loc
+  | Print of exp
   
   | Declareint of loc		(* Integer i *)
   | Declarebool of loc
   | Declarestr of loc
   | Declareproto of loc * loc * string * loc
-  | Readfrom of loc * loc
+
+  | Readfrom of loc * loc 
   | Writeto of loc * loc
+  | Readfrom1 of loc * loc * string
+  | Writeto1 of loc * loc * string
  
   | SetProto1 of loc * exp_inside * loc * exp
   | SetProto2 of loc * exp_inside * loc * index * exp
@@ -138,15 +141,20 @@ and com_to_str c = match c with
 	(exp_to_str b) (com_to_str c0) (com_to_str c1) 
   | While (b, c) ->
       P.sprintf "while %s {\n%s ;\n}" (exp_to_str b) (com_to_str c) 
-  | Print l -> P.sprintf "cout << %s << endl" l
+  | Print e -> P.sprintf "cout << %s << endl" (exp_to_str e)
   | Declareint l -> P.sprintf "int %s" l
   | Declarebool l -> P.sprintf "bool %s" l
   | Declarestr l -> P.sprintf "string %s" l
   | Declareproto (l1, l2, s, l3) -> P.sprintf "%s %s" l3 l1
+
   | Readfrom (l1, l2) -> 
       P.sprintf "fstream input(\"%s\",ios::in | ios::binary);\n%s.ParseFromIstream(&input)" l2 l1
   | Writeto (l1, l2) -> 
       P.sprintf "fstream output(\"%s\",ios::out | ios::binary);\n%s.SerializeToOstream(&output)" l2 l1
+  | Readfrom1 (l1, l2, n) -> 
+      P.sprintf "fstream input%s(\"%s\",ios::in | ios::binary);\n%s.ParseFromIstream(&input%s)" n l2 l1 n
+  | Writeto1 (l1, l2, n) -> 
+      P.sprintf "fstream output%s(\"%s\",ios::out | ios::binary);\n%s.SerializeToOstream(&output%s)" n l2 l1 n
   | Copyfrom (e, l) -> P.sprintf "const_cast(%s) = %s"(exp_to_str e) l
 
   | SetProto1 (l1, e, l2, a) ->
@@ -189,6 +197,8 @@ let rec find_include c = match c with
   | Declareproto (l1, l2, s, l3) -> P.sprintf "#include \"%s.pb.h\"\n" l2
   | Readfrom (l1, l2) -> ""
   | Writeto (l1, l2) -> ""
+  | Readfrom1 (l1, l2, n) -> ""
+  | Writeto1 (l1, l2, n) -> ""
   | Copyfrom (e, l) -> ""
   | SetProto1 (l1, e,l2, a) -> ""
   | SetProto2 (l1, e, l2, a ,b) -> ""

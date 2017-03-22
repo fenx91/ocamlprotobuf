@@ -1,7 +1,21 @@
 person {
-  name: "Lily"
+  name: "Amy"
   age: 26
   id: 2013210746
   registed: true
+  grades {
+    total: 94
+    homework: 97
+    homework: 84
+    homework: 93
+    homework: 89
+    exam {
+      score: 100
+      weight: 3
+    }
+  }
+}
+person {
+  name: "Shawn"
 }
 

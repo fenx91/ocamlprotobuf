@@ -1,16 +1,13 @@
 syntax = "proto2";
-message Phone {
-  required int32 number = 1;
-  optional string type = 2;
-}
-
 message Exam { 
-  optional int32 score = 2;
+  optional int32 weight = 2;
+  optional int32 score = 1;
 }
 
 message Grade {
   repeated int32 homework = 2;
-  optional Exam exams = 3; 
+  optional Exam exam = 3; 
+  optional int32 total = 1;
 }
 
 message Person {

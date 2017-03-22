@@ -122,17 +122,20 @@ com :
  
 | com SEMICOLON com                          { Seq($1,$3) }
 | IF exp THEN com END			     { If($2,$4) }
-| IF exp THEN com END ELSE com END           { Ifelse($2,$4,$7) }
+| IF exp THEN com ELSE com END           { Ifelse($2,$4,$6) }
 | WHILE exp DO com END                       { While($2,$4) }
-| PRINT IDENTIFIER                           { Print($2) }
+| PRINT exp                           { Print($2) }
 | LPAREN com RPAREN                          { $2 } 
 
 | DECLAREINT IDENTIFIER			     { Declareint($2) }
 | DECLAREBOOL IDENTIFIER                     { Declarebool($2) }
 | DECLARESTR IDENTIFIER                      { Declarestr($2) }
 | DECLAREPROTO IDENTIFIER QUOTE IDENTIFIER PERIOD IDENTIFIER QUOTE QUOTE IDENTIFIER QUOTE { Declareproto($2,$4,$6,$9) } 
+
+| IDENTIFIER READFROM QUOTE IDENTIFIER QUOTE INT  { Readfrom1($1,$4,$6) }  
 | IDENTIFIER READFROM QUOTE IDENTIFIER QUOTE    { Readfrom($1,$4) } 
-| IDENTIFIER WRITETO QUOTE IDENTIFIER QUOTE     { Writeto($1,$4) }
+| IDENTIFIER WRITETO QUOTE IDENTIFIER QUOTE INT    { Writeto1($1,$4,$6) }
+| IDENTIFIER WRITETO QUOTE IDENTIFIER QUOTE     { Writeto($1,$4) } 
 
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER SET exp                          { SetProto1($1,$3,$5,$7) }
 | IDENTIFIER DOLLAR exp_inside DOLLAR IDENTIFIER LBRACK index RBRACK SET exp    { SetProto2($1,$3,$5,$7,$10) }

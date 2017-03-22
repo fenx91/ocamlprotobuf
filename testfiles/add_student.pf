@@ -1,0 +1,15 @@
+Protobuf stu_info "information.proto" "Students_information";
+if ((sizeof (stu_info $ person)) == 0) then
+   stu_info $ person[+];
+   stu_info $ person[+]
+end;
+stu_info $ person[0] $ name := "Amy";
+stu_info $ person[1] $ name := "Shawn";
+stu_info $ person[0] $ age := 26;
+stu_info $ person[0] $ registed := true;
+stu_info $ person[0] $ id[+] 2013210746;
+String str;
+str := pprint stu_info;
+print str;
+stu_info writeto "testfiles/stu_info"
+ 

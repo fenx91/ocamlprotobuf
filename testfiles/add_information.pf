@@ -1,22 +1,40 @@
-Protobuf stu_info "address.proto" "Students_information";
-Protobuf person
-if ((sizeof (stu_info $ person)) == 0) then
-   stu_info $ person[+];
-   stu_info $ person[+]
-end;
-stu_info $ person[0] $ name := "Lily";
-stu_info $ person[1] $ name := "Shawn";
-stu_info $ person[0] $ age := 26;
-stu_info $ person[0] $ registed := true;
-stu_info $ person[0] $ id[+] 2013210746;
-Integer x;
-x := 0; 
-while (x < 3) do 
+Protobuf stu_info "information.proto" "Students_information";
+Protobuf grade_amy "information.proto" "Grade"; 
+
+stu_info readfrom "testfiles/stu_info" 1;
+grade_amy readfrom "testfiles/grade_amy" 2;
+
+if (stu_info $ person[0] $ name == "Amy") then
+
+if (stu_info $ person[0] $ registed ?) && (stu_info $ person[0] $ registed) then
+
 stu_info $ person[0] $ grades[+];
-stu_info $ person[0] $ grades[x] $ homework[+] 92;
+Integer temp;
+Integer index;
+index := sizeof (stu_info $ person[0] $ grades) - 1;
+temp := grade_amy $ total;
+stu_info $ person[0] $ grades[index] $ total := temp;
 
+temp := grade_amy $ exam $ weight;
+stu_info $ person[0] $ grades[index] $ exam $ weight := temp;
 
+temp := grade_amy $ exam $ score;
+stu_info $ person[0] $ grades[index] $ exam $ score := temp;
+
+Integer i;
+i := 0;
+
+while (i < sizeof (grade_amy $ homework)) do
+temp := grade_amy $ homework[i];
+stu_info $ person[0] $ grades[index] $ homework[+] temp;
+i := i + 1
+end
+
+end
+else
+print "Cannot_add_information"
 end;
+
 String str;
 str := pprint stu_info;
 print str

@@ -30,7 +30,7 @@ echo "Ocaml to C++ of $1 failed!"
 rm ${reffile}.cpp
 exit 1;
 else
-g++ -I /usr/local/include -L /usr/local/lib -o "${reffile}.out" ${reffile}.cpp ${basedir}address.pb.cc -lprotobuf -pthread && echo "C++ to binary of ${reffile}.cpp successfully!"
+g++ -I /usr/local/include -L /usr/local/lib -o "${reffile}.out" ${reffile}.cpp ${basedir}information.pb.cc -lprotobuf -pthread && echo "C++ to binary of ${reffile}.cpp successfully!"
 fi
 
 if [ -s "${reffile}.out" ]; then

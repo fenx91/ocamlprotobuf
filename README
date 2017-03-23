@@ -1,77 +1,41 @@
-This assignment will require you to write in OCaml, a popular and
-efficient ML variant. ML variants are favored by PL researchers
-because they are particularly good for writing programs that
-manipulate other programs.
+In this project, I implement a new programming language, PF, to manipulate Protobuf data directly.
 
-Manual:         http://caml.inria.fr/pub/docs/manual-ocaml/index.html
-Tutorials:      http://caml.inria.fr/pub/docs/manual-ocaml/manual003.html
-                http://www.ocaml-tutorial.org/
-Book:           http://caml.inria.fr/pub/docs/oreilly-book/
-Download It:    http://caml.inria.fr/ocaml/release.en.html
+PF is a new language aiming to facilitate the data operations with Protobuf and to provide an intuitive idea of how to work with it. 
+It treats Protobuf objects as its fundamental element and provides built-in operators and functions to operate on these objects. 
+The main target of designing PF is to make working with Protobuf data much easier. 
+When we are using PF, we do not need to differentiate the different access methods to handle different fields of a Protobuf data. 
 
-----------------
+In the report, the language reference manual of my language PF is provided and some example programs are given to test the feature of this language.
 
-In this assignment, we will be manipulating (interpreting) IMP
-programs. All the work in lexing and parsing has been done for
-you. You need only flesh out the semantics-based interpreter.
+______________________________
 
-README.txt              this file
-imp.ml                  Abstract syntax of Winskel's IMP as an abstract
-                        data type (AST)
-lex.mll                 A "lex" file for our IMP concrete syntax
-parse.mly               A "yacc" file for our IMP concrete syntax
-main.ml                 A main() driver that reads an IMP command from
-                        stdin and evaluates it
-hw1.ml                  The file you must edit so that it contains
-                        an interpreter for IMP 
-hw1.mli                 Your hw1.ml must meet this contract (although it
-                        can do other things)
-hello.ml                "Hello, World" in OCaml
-Makefile                "make hello", "make all", "make clean" and "make test"
+Program Execution
 
-----------------
+To work with protocol buffers, you should install the Protobuf compiler protoc first. Since the PF compiles pf codes to C++, you need to run protoc to compile the .proto files to C++ classes first. 
 
-Get ocaml up and running on your system. Make sure that "make hello"
-works. Part of comparing and evaluating languages involves being able
-to run and try out new languages and run-time systems.
+The testfiles have protoc .proto files needed already.
 
-----------------
+PF includes two scripts which allow you to compile and run PF program easily. 
 
-Run "make all" to build the skeletal IMP interpreter. 
+To compile and run a PF program, run the following script:
 
-Run the resulting imp executable and type in "skip ." as input. You
-should see something like this:
+./PF.sh <file_name>.pf
 
-  $ ./imp
-  Enter an IMP command (use . to end your command):
-  skip .
-  skip
+If there is no ./pf file, it will execute make automatically.
 
-The harness accepts an IMP command (terminated with a "."),
-pretty-prints it back out, and then interprets it. Interpreting skip
-is not very exciting, however. Our concrete IMP syntax is more or less
-what you would expect. It also supports ()'s, {}'s, and
-comments. Example concrete IMP command:
+Then if there is any parse error then the compilation process fails and the script displays parse error. If there is any type error then the compilation process fails and the script displays the corresponding type checking error. If the program compiling correctly, the script displays Ocaml to c++ succeeded.
 
-  x := 5 ;      /* comment */
-  { if x <= 9 then { x := x - (5 - 3) } else print x } ; 
-  x := 6 
-  .
+After compiling the program successfully, it will generate <file_name>.cpp and then you can use the g++ to compile and then run the program. Here, you need to provide the when you use g++ to compiling the program.
 
-----------------
+Alternatively, you can use the following script on the test programs:
 
-Inspect imp.ml to get a feel for how we have translated IMP into
-ML. The translation is quite direct.
+./PF_test.sh <file_name>.pf
 
-Inspect hw1.ml to see the skeletal interpreter. The complete
-interpreter for the Aexp sub-language has been provided. You must
-complete the skeletal interpreters for Bexp and Com. Use the big-step
-operational semantics rules as guides.
+Besides the errors listed above, if there is any error during running the c++ code, the script displays these errors. 
 
-Keep at it until you pass all of the tests in "make test". 
+If it runs successfully, it will generate <file_name>.output files and print the result on the script directly.
 
-----------------
+You can run ./PF clean to remove all the *.cpp *.out *.output files and also it will execute make clean.  
 
-Write some tests of your own. Put your best test case in the file
-"example.imp".
+Thank you!
 

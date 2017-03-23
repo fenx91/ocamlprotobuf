@@ -25,5 +25,19 @@ echo "No such file or directory : $1"
 exit 1;
 fi
 
+if [ ! -s "${reffile}.cpp" ]; then
+echo "Ocaml to C++ of $1 failed!"
+rm ${reffile}.cpp
+exit 1;
+else
+g++ -I /home/username/local/include -L /home/username/local/lib -o "${reffile}.out" ${reffile}.cpp ${basedir}information.pb.cc -lprotobuf -pthread && echo "C++ to binary of ${reffile}.cpp successfully!"
+fi
+
+if [ -s "${reffile}.out" ]; then
+./${reffile}.out > ${reffile}.output && echo "Ran $1 successfully" 
+cat ${reffile}.output
+else
+echo "C++ to binary of ${reffile}.cpp failed"
+fi
 fi
 
